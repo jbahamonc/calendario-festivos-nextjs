@@ -44,6 +44,12 @@ export const metadata: Metadata = {
       "Consulta los días festivos oficiales por país y planifica tu año con información actualizada y precisa.",
     siteName: "Calendario de Días Festivos",
     url: "https://calendario-festivos.online",
+    images: [
+      {
+        url: "/og-image.jpg",
+        alt: "Calendario de Días Festivos",
+      },
+    ],
   },
 
   // Twitter
@@ -52,6 +58,7 @@ export const metadata: Metadata = {
     title: "Calendario de Días Festivos | Holiday Calendar",
     description:
       "Consulta los días festivos oficiales por país y planifica tu año con información actualizada y precisa.",
+    images: ["/og-image.jpg"],
     creator: "@CalendarioFest",
   },
 
