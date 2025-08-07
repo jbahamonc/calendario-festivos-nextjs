@@ -104,6 +104,8 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9313218960938213"
+     crossorigin="anonymous"></script>
       </head>
       <body className={inter.className}>
         <LanguageProvider>
