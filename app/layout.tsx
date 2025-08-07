@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 // Definir metadatos para SEO y compartir en redes sociales
 export const metadata: Metadata = {
-  metadataBase: new URL("https://calendario-festivos.vercel.app"),
+  metadataBase: new URL("https://calendario-festivos.online"),
   title: {
     default: "Calendario de Días Festivos | Holiday Calendar",
     template: "%s | Calendario de Días Festivos",
@@ -43,15 +43,7 @@ export const metadata: Metadata = {
     description:
       "Consulta los días festivos oficiales por país y planifica tu año con información actualizada y precisa.",
     siteName: "Calendario de Días Festivos",
-    url: "https://calendario-festivos.vercel.app",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Calendario de Días Festivos",
-      },
-    ],
+    url: "https://calendario-festivos.online",
   },
 
   // Twitter
@@ -60,17 +52,12 @@ export const metadata: Metadata = {
     title: "Calendario de Días Festivos | Holiday Calendar",
     description:
       "Consulta los días festivos oficiales por país y planifica tu año con información actualizada y precisa.",
-    images: ["/twitter-image.png"],
     creator: "@CalendarioFest",
   },
 
   // Canonical URL
   alternates: {
-    canonical: "https://calendario-festivos.vercel.app",
-    languages: {
-      "es-ES": "https://calendario-festivos.vercel.app/es",
-      "en-US": "https://calendario-festivos.vercel.app/en",
-    },
+    canonical: "https://calendario-festivos.online"
   },
 
   // Robots
