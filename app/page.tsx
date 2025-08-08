@@ -614,6 +614,15 @@ export default function HolidayCalendar() {
 
             {/* Main Calendar Area */}
             <div className="lg:col-span-3 order-1 lg:order-2">
+              <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-9313218960938213"
+                data-ad-slot="3205064408"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+              <script>
+                (adsbygoogle = window.adsbygoogle || []).push({ });
+              </script>
               {/* Error Alert */}
               {holidaysError && (
                 <Alert className="mb-6">
