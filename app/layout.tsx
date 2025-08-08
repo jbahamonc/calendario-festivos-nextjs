@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     google: "google-site-verification-code",
     yandex: "yandex-verification-code",
   },
-    generator: 'v0.dev'
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -99,8 +99,14 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9313218960938213" crossorigin="anonymous"></script>
+        <script async custom-element="amp-auto-ads"
+          src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+        </script>
       </head>
       <body className={inter.className}>
+        <amp-auto-ads type="adsense"
+          data-ad-client="ca-pub-9313218960938213">
+        </amp-auto-ads>
         <LanguageProvider>
           {/* Metadatos estructurados JSON-LD para SEO */}
           <script
