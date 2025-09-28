@@ -5,6 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import { X, Calendar, Clock } from "lucide-react"
+import { HolidayTooltip } from "./holiday-tooltip"
 
 interface MonthCalendarProps {
   year: number
@@ -94,6 +95,36 @@ export function MonthCalendar({ year, month, holidays, holidayDetails = [], onDa
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
     return diffDays
+  }
+
+  const handleDayClick = (day: number, event: React.MouseEvent) => {
+    if (onDateClick) {
+      onDateClick(new Date(year, month, day))
+    }
+
+    const date = new Date(year, month, day)
+    const holiday = getHolidayInfo(day)
+    const rect = (event.target as HTMLElement).getBoundingClientRect()
+    const position = calculateTooltipPosition(rect)
+
+    if (holiday) {
+      setSelectedTooltip({
+        date: date.toISOString().split("T")[0],
+        type: "holiday",
+        content: holiday,
+        position: { x: position.x, y: position.y },
+        placement: position.placement,
+      })
+    } else if (isFutureDate(day)) {
+      const daysUntil = getDaysUntilDate(day)
+      setSelectedTooltip({
+        date: date.toISOString().split("T")[0],
+        type: "future",
+        content: { daysUntil },
+        position: { x: position.x, y: position.y },
+        placement: position.placement,
+      })
+    }
   }
 
   // Función para calcular la mejor posición del tooltip

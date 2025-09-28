@@ -25,6 +25,8 @@ import { MonthCalendar } from "@/components/month-calendar"
 import { LanguageSelector } from "@/components/language-selector"
 import { Footer } from "@/components/footer"
 import { TodayInfo } from "@/components/today-info"
+import { HolidayInfo } from "@/components/holiday-info"
+import { FAQ } from "@/components/faq"
 import { useLanguage } from "@/contexts/language-context"
 
 const currentYear = new Date().getFullYear()
@@ -36,137 +38,8 @@ const years = Array.from({ length: 76 }, (_, i) => {
   }
 })
 
-// Función para detectar el país del usuario
-const detectUserCountry = async (): Promise<string> => {
-  try {
-    // Intentar detectar por timezone primero
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    const timezoneToCountry: { [key: string]: string } = {
-      "America/Mexico_City": "MX",
-      "America/Bogota": "CO",
-      "America/Argentina/Buenos_Aires": "AR",
-      "Europe/Madrid": "ES",
-      "America/Lima": "PE",
-      "America/Santiago": "CL",
-      "America/Caracas": "VE",
-      "America/Guayaquil": "EC",
-      "America/La_Paz": "BO",
-      "America/Asuncion": "PY",
-      "America/Montevideo": "UY",
-      "America/Costa_Rica": "CR",
-      "America/Panama": "PA",
-      "America/Guatemala": "GT",
-      "America/Tegucigalpa": "HN",
-      "America/El_Salvador": "SV",
-      "America/Managua": "NI",
-      "America/Santo_Domingo": "DO",
-      "America/Havana": "CU",
-      "America/New_York": "US",
-      "America/Toronto": "CA",
-      "America/Sao_Paulo": "BR",
-    }
-
-    if (timezoneToCountry[timezone]) {
-      return timezoneToCountry[timezone]
-    }
-
-    // Fallback: intentar detectar por idioma del navegador
-    const language = navigator.language.toLowerCase()
-    const languageToCountry: { [key: string]: string } = {
-      "es-mx": "MX",
-      "es-co": "CO",
-      "es-ar": "AR",
-      "es-es": "ES",
-      "es-pe": "PE",
-      "es-cl": "CL",
-      "es-ve": "VE",
-      "es-ec": "EC",
-      "es-bo": "BO",
-      "es-py": "PY",
-      "es-uy": "UY",
-      "es-cr": "CR",
-      "es-pa": "PA",
-      "es-gt": "GT",
-      "es-hn": "HN",
-      "es-sv": "SV",
-      "es-ni": "NI",
-      "es-do": "DO",
-      "es-cu": "CU",
-      "en-us": "US",
-      "en-ca": "CA",
-      "pt-br": "BR",
-    }
-
-    if (languageToCountry[language]) {
-      return languageToCountry[language]
-    }
-
-    // Si el idioma es español genérico, usar México como default
-    if (language.startsWith("es")) {
-      return "MX"
-    }
-
-    // Si el idioma es inglés genérico, usar Estados Unidos como default
-    if (language.startsWith("en")) {
-      return "US"
-    }
-
-    // Si el idioma es portugués, usar Brasil
-    if (language.startsWith("pt")) {
-      return "BR"
-    }
-
-    // Último fallback: intentar usar una API de geolocalización IP (opcional)
-    try {
-      const geoResponse = await fetch("https://ipapi.co/country_code/", {
-        method: "GET",
-        headers: {
-          Accept: "text/plain",
-        },
-      })
-
-      if (geoResponse.ok) {
-        const countryCode = await geoResponse.text()
-        const supportedCountries = [
-          "MX",
-          "CO",
-          "AR",
-          "ES",
-          "PE",
-          "CL",
-          "VE",
-          "EC",
-          "BO",
-          "PY",
-          "UY",
-          "CR",
-          "PA",
-          "GT",
-          "HN",
-          "SV",
-          "NI",
-          "DO",
-          "CU",
-          "US",
-          "CA",
-          "BR",
-        ]
-
-        if (supportedCountries.includes(countryCode.toUpperCase())) {
-          return countryCode.toUpperCase()
-        }
-      }
-    } catch (geoError) {
-      console.log("Geolocation detection failed, using fallback")
-    }
-
-    // Default final: México
-    return "MX"
-  } catch (error) {
-    console.error("Error detecting user country:", error)
-    return "MX" // Fallback por defecto
-  }
-}
+import { detectUserCountry } from "@/lib/location-utils"
+import { MainHeader } from "@/components/main-header"
 
 export default function HolidayCalendar() {
   const { t, getMonths } = useLanguage()
@@ -326,72 +199,17 @@ export default function HolidayCalendar() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Hero Banner Simplificado */}
-      <div className="relative bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 overflow-hidden">
-        {/* Elementos decorativos de fondo */}
-        <div className="absolute inset-0">
-          {/* Patrón de puntos */}
-          <div className="absolute inset-0 opacity-20">
-            <div
-              className="w-full h-full"
-              style={{
-                backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)`,
-                backgroundSize: "50px 50px",
-              }}
-            />
-          </div>
-
-          {/* Formas geométricas flotantes */}
-          <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full opacity-30 animate-bounce"></div>
-          <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-full opacity-25 animate-pulse"></div>
-          <div className="absolute top-1/3 right-1/3 w-16 h-16 bg-gradient-to-br from-yellow-400 to-red-500 rounded-full opacity-20 animate-bounce"></div>
-        </div>
-
-        {/* Contenido principal */}
-        <div className="relative z-10 flex items-center justify-center py-20 px-6">
-          <div className="max-w-6xl mx-auto text-center">
-            {/* Badge superior */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8">
-              <Sparkles className="h-4 w-4 text-amber-400" />
-              <span className="text-white/90 text-sm font-medium">✨ {t("bannerBadge")}</span>
-            </div>
-
-            {/* Título principal */}
-            <h1 className="text-6xl md:text-8xl font-black text-white mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
-                {t("title")}
-              </span>
+      <div className="relative bg-gradient-to-br from-blue-600 to-indigo-700 overflow-hidden">
+        <MainHeader className="bg-transparent border-b border-white/10" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+          <div className="text-center">
+            <h1 className="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl">
+              {t("calendarTitle")}
             </h1>
-
-            {/* Subtítulo */}
-            <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-8 leading-relaxed">
-              {t("bannerSubtitle")}
+            <p className="mt-3 max-w-md mx-auto text-base text-blue-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+              {t("calendarDescription")}
             </p>
-
-            {/* Estadísticas */}
-            <div className="flex flex-wrap justify-center gap-8">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-amber-400 mb-1">20+</div>
-                <div className="text-white/70 text-sm">{t("countries")}</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-orange-400 mb-1">365</div>
-                <div className="text-white/70 text-sm">{t("daysYear")}</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-red-400 mb-1">100+</div>
-                <div className="text-white/70 text-sm">{t("holidaysTotal")}</div>
-              </div>
-            </div>
           </div>
-        </div>
-
-        {/* Elementos flotantes adicionales */}
-        <div className="absolute top-1/4 left-8 animate-float">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg rotate-45 opacity-30"></div>
-        </div>
-        <div className="absolute top-1/2 right-12 animate-float-delayed">
-          <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-teal-500 rounded-full opacity-40"></div>
         </div>
       </div>
 
@@ -401,18 +219,7 @@ export default function HolidayCalendar() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Left Sidebar */}
             <div className="lg:col-span-1 space-y-6 order-2 lg:order-1">
-              {/* Selector de idioma en lugar del mensaje de país detectado */}
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Languages className="h-5 w-5" />
-                    {t("language")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <LanguageSelector />
-                </CardContent>
-              </Card>
+              
 
               {/* Controls */}
               <Card>
@@ -614,6 +421,9 @@ export default function HolidayCalendar() {
 
             {/* Main Calendar Area */}
             <div className="lg:col-span-3 order-1 lg:order-2">
+              {/* Holiday Information Section */}
+              {selectedCountry && <HolidayInfo countryCode={selectedCountry} />}
+              
               <ins className="adsbygoogle"
                 style={{ display: "block" }}
                 data-ad-client="ca-pub-9313218960938213"
@@ -679,6 +489,9 @@ export default function HolidayCalendar() {
                   </a>
                 </p>
               </div>
+
+              {/* FAQ Section */}
+              <FAQ />
             </div>
           </div>
         </div>
